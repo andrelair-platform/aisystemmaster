@@ -393,6 +393,58 @@ These are the things that make an agent demo into an agent product.
 
 ---
 
+### Planning & reasoning loops
+
+"Planning" in the mental model is not one thing — it's a **choice of control loop**. Each has a different reliability/cost profile. Know them by name; interviewers ask for them.
+
+| Pattern | How it works | When to reach for it |
+| --- | --- | --- |
+| **ReAct** (reason + act) | Interleave a thought, a tool call, and an observation in a single loop until done | Default for tool-using agents. Simple, debuggable, good baseline. |
+| **Plan-and-Execute** | LLM writes a full plan first, then a cheaper executor runs each step | Multi-step tasks where re-planning every turn is wasteful. Cuts cost by planning once. |
+| **Reflexion / self-reflection** | Agent critiques its own output and retries with the critique in context | Tasks with a checkable failure signal (tests pass, schema valid, eval score). |
+| **Tree-of-Thoughts / search** | Explore multiple reasoning branches, score, keep the best | High-value one-shot problems where exploration beats speed. Expensive. |
+| **Router / dispatch** | A cheap classifier routes the request to the right tool, sub-agent, or skip-the-LLM path | High-volume production traffic where most requests are simple. |
+
+**Rule of thumb:** start with ReAct + a good tool set. Only escalate to plan-and-execute or reflection when a single-loop agent measurably fails on your eval set — not before.
+
+---
+
+### Agent memory
+
+The mental model lists "Memory" as one word; in practice it's an architecture with distinct stores and lifecycle policies.
+
+| Type | Holds | Backed by |
+| --- | --- | --- |
+| **Short-term (working)** | Current-task scratchpad, recent turns, intermediate results | Context window + summary buffer |
+| **Episodic** | Past interactions / runs — "what happened last time" | Vector store keyed by session/user |
+| **Semantic** | Durable facts about the user, domain, or world | KV store or knowledge graph |
+| **Procedural** | Learned skills / reusable tool sequences | Prompt library, skill registry |
+
+- **Memory ≠ RAG.** RAG retrieves from a *corpus you own*; memory retrieves from *the agent's own history*. Same vector-DB machinery, different provenance and lifecycle.
+- **Write/read/forget policies matter more than the store.** Decide what gets written (not every turn), how it's summarized, when it expires, and how forgetting propagates (GDPR right-to-be-forgotten — see [`compliance-governance.md`](compliance-governance.md)).
+- **Context-window budgeting** is a memory decision: what to keep verbatim, what to summarize, what to page out to a store and retrieve on demand.
+
+---
+
+### Single-agent vs multi-agent — topologies and trade-offs
+
+Reach for multi-agent **only after a single agent with good tools measurably fails.** Multi-agent multiplies cost, latency, and failure surface; it buys you separation of concerns and parallelism. The book's caution applies: most "multi-agent" needs are actually one agent with better tool descriptions.
+
+| Topology | Shape | Strengths | Costs / risks |
+| --- | --- | --- | --- |
+| **Single agent + tools** | One loop, many tools | Simplest to build, debug, evaluate | Tool overload; one context holds everything |
+| **Supervisor / orchestrator-worker** | A lead agent delegates to specialist workers | Clear ownership, easy to add specialists | Supervisor is a bottleneck + single point of failure |
+| **Hierarchical** | Supervisors of supervisors | Scales to large task trees | Latency stacks; hard to trace end-to-end |
+| **Sequential pipeline** | Fixed hand-off A→B→C | Predictable, cheap, easy to eval per stage | Not adaptive; a wrong early step poisons the rest |
+| **Network / peer-to-peer** | Agents message each other freely | Maximum flexibility | Emergent loops, hardest to control and cost-cap |
+| **Blackboard** | Agents read/write a shared state store | Decouples agents, good for parallel contributors | Needs strict schema + locking discipline |
+
+**Design axis — loop economics.** Treat cost and latency as a *design-time* constraint, not just a runtime cap. An agent's spend is roughly `iterations × (growing context tokens) × tool round-trips`, and multi-agent multiplies this by the number of agents plus their inter-agent messages. Budget it before you build: pick the cheapest topology that passes your eval set, cap iterations, and prefer a router that skips the LLM entirely on easy traffic. This connects to the FinOps and latency work in [Pillar 9.5](#pillar-95--production-operations).
+
+Whatever topology you pick, the [agent reliability engineering](#agent-reliability-engineering) rules above still apply — and multi-agent adds one hard requirement: **typed agent-to-agent message contracts**, never free-form English between agents.
+
+---
+
 ## Pillar 3 — MCP
 
 This is becoming essential.
@@ -448,6 +500,22 @@ Prompt + Evaluation Dataset + Metrics
 | **Online eval** | "Is the production system actually working for real users?" | Continuously, on a sample of live traffic. |
 | **A/B / canary** | "Is the new prompt/model statistically better than the old one?" | On release, with proper power analysis. |
 | **Human eval** | "Do experts agree with what the system produced?" | Periodically, on hard or high-stakes samples — calibrates your judges. |
+
+### Evaluating agents, not just outputs
+
+The six numbers above evaluate an *answer*. An **agent** also has to be evaluated on *how it got there* — the trajectory. A wrong final answer and a right answer reached by a lucky wrong path are both failures.
+
+| What to measure | Question it answers |
+| --- | --- |
+| **Task-completion rate** | Did the agent finish the goal, end-to-end? |
+| **Trajectory / process correctness** | Was the *sequence* of steps and tool calls valid — not just the final output? |
+| **Tool-selection accuracy** | Did it pick the right tool with the right arguments at each step? |
+| **Step efficiency** | How many iterations / tool calls / tokens vs the optimal path? |
+| **Recovery rate** | When a tool failed, did the agent recover instead of looping or giving up? |
+
+- **Judge the trace, not only the answer.** Use an LLM-judge (or assertions) over the logged step sequence — this is where your observability traces ([Pillar 5](#pillar-5--observability)) and eval harness meet.
+- **Golden trajectories.** For agent flagships, your golden set includes expected tool sequences, not just Q/A pairs.
+- **This maps to reliability.** Trajectory eval is how you catch the loop/idempotency/recovery failures listed under [agent reliability engineering](#agent-reliability-engineering) *before* they reach production.
 
 ### What you must build
 
@@ -704,6 +772,7 @@ In 2026 the CFO question is no longer *"does it work?"* — it's *"what does it 
 6. **Context-window economics** — long contexts cost quadratically in some setups; chunk aggressively, retrieve precisely.
 7. **Quantization** — GGUF / AWQ / GPTQ for self-hosted models cuts VRAM 2–4× with minimal quality loss.
 8. **Smaller model + better retrieval** — SLM + great RAG often beats Frontier + mediocre RAG, at 1/20th the cost.
+9. **Agent loop economics** — for agentic features, cost is `iterations × growing-context tokens × tool round-trips`, multiplied again in multi-agent setups by the number of agents and their messages. Cap iterations, prefer the cheapest [topology](#single-agent-vs-multi-agent--topologies-and-trade-offs) that passes eval, and route easy traffic past the LLM entirely.
 
 **Disciplines to build:**
 - Per-feature unit economics dashboard (€ per query, by feature).

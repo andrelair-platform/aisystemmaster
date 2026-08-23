@@ -36,6 +36,7 @@ const sidebars: SidebarsConfig = {
         'projects/project3-insurance-compliance-copilot',
       ],
     },
+    'mastery-checklist',
   ],
 };
 
