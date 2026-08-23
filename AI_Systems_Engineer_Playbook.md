@@ -33,6 +33,10 @@ Not:
 
 > Build toward what the market is actually paying for. The market in 2026 does not want people who train models — it wants engineers who **turn AI into business products and operational systems**. Every project, every skill, every public post is chosen because it maps directly to one of the six demand categories below.
 
+**How to know you've arrived:**
+
+> Reading this playbook is not the same as mastering it. Use the [**Mastery Checklist**](mastery-checklist.md) — for every pillar it gives the concrete *proof artifact* and *expert bar* that separates "I read it" from "I can build and defend it."
+
 ---
 
 ## Level 0 — Your Position Today
