@@ -26,3 +26,7 @@ Ten deep-reference files — one per skill domain. Each maps to a set of project
 - **P1 (Enterprise Knowledge Platform):** 1-4, 6-8 at full depth; 5, 9 optional
 - **P2 (Workflow Automation):** 1-9 (MCP and reliability become core)
 - **P3 (Insurance Copilot):** All 10 at full depth — compliance and governance required
+
+## Proving mastery
+
+Reading a discipline is not the same as mastering it. See the [**Mastery Checklist**](../mastery-checklist) for the specific proof artifact and "expert bar" that demonstrates you've mastered each pillar — not just read it.
