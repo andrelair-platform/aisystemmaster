@@ -4,7 +4,6 @@ title: "Enterprise Security"
 sidebar_position: 9
 ---
 
-
 ## Scope
 
 This covers the security concerns that appear in a regulated-industry production system beyond application-level AI security (see `ai-security-red-teaming.md`): identity and access management, secrets lifecycle, data loss prevention, penetration testing, dependency scanning, and vulnerability management.

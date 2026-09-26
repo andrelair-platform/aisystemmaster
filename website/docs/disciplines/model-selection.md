@@ -4,7 +4,6 @@ title: "Model Selection"
 sidebar_position: 3
 ---
 
-
 ## The Core Mental Shift
 
 A beginner picks one LLM. An AI Systems Engineer picks a **model portfolio** — multiple specialized models, each chosen for what it does best.

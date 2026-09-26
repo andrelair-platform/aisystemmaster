@@ -4,7 +4,6 @@ title: "AI Security & Red Teaming"
 sidebar_position: 5
 ---
 
-
 ## Why This Is a Separate Discipline
 
 Governance (AI Act compliance) is about being *allowed* to ship. Security is about not being *breached* once you do. They overlap but are distinct practices.

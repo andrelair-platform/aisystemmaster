@@ -4,7 +4,6 @@ title: "MCP — Model Context Protocol"
 sidebar_position: 6
 ---
 
-
 ## What MCP Is
 
 MCP (Model Context Protocol) is an open standard that defines how AI agents connect to external tools, data sources, and services. Think of it as USB-C for AI: one protocol, many connectors.

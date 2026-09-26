@@ -4,7 +4,6 @@ title: "Playbook"
 sidebar_position: 1
 ---
 
-
 After everything we've discussed (the book chapters, MCP, AI Act, enterprise AI, your background, your alternance, your goal of becoming an AI Systems Engineer by 2027), here's a single coherent playbook.
 
 Not:
@@ -40,7 +39,7 @@ Not:
 
 **How to know you've arrived:**
 
-> Reading this playbook is not the same as mastering it. Use the [**Mastery Checklist**](../mastery-checklist) — for every pillar it gives the concrete *proof artifact* and *expert bar* that separates "I read it" from "I can build and defend it."
+> Reading this playbook is not the same as mastering it. Use the [**Mastery Checklist**](../mastery-checklist.md) — for every pillar it gives the concrete *proof artifact* and *expert bar* that separates "I read it" from "I can build and defend it."
 
 ---
 
@@ -448,9 +447,9 @@ Reach for multi-agent **only after a single agent with good tools measurably fai
 | **Network / peer-to-peer** | Agents message each other freely | Maximum flexibility | Emergent loops, hardest to control and cost-cap |
 | **Blackboard** | Agents read/write a shared state store | Decouples agents, good for parallel contributors | Needs strict schema + locking discipline |
 
-**Design axis — loop economics.** Treat cost and latency as a *design-time* constraint, not just a runtime cap. An agent's spend is roughly `iterations × (growing context tokens) × tool round-trips`, and multi-agent multiplies this by the number of agents plus their inter-agent messages. Budget it before you build: pick the cheapest topology that passes your eval set, cap iterations, and prefer a router that skips the LLM entirely on easy traffic. This connects to the FinOps and latency work in Pillar 9.5.
+**Design axis — loop economics.** Treat cost and latency as a *design-time* constraint, not just a runtime cap. An agent's spend is roughly `iterations × (growing context tokens) × tool round-trips`, and multi-agent multiplies this by the number of agents plus their inter-agent messages. Budget it before you build: pick the cheapest topology that passes your eval set, cap iterations, and prefer a router that skips the LLM entirely on easy traffic. This connects to the FinOps and latency work in [Pillar 9.5](#pillar-95--production-operations).
 
-Whatever topology you pick, the agent reliability engineering rules above still apply — and multi-agent adds one hard requirement: **typed agent-to-agent message contracts**, never free-form English between agents.
+Whatever topology you pick, the [agent reliability engineering](#agent-reliability-engineering) rules above still apply — and multi-agent adds one hard requirement: **typed agent-to-agent message contracts**, never free-form English between agents.
 
 ---
 
@@ -522,9 +521,9 @@ The six numbers above evaluate an *answer*. An **agent** also has to be evaluate
 | **Step efficiency** | How many iterations / tool calls / tokens vs the optimal path? |
 | **Recovery rate** | When a tool failed, did the agent recover instead of looping or giving up? |
 
-- **Judge the trace, not only the answer.** Use an LLM-judge (or assertions) over the logged step sequence — this is where your observability traces (Pillar 5) and eval harness meet.
+- **Judge the trace, not only the answer.** Use an LLM-judge (or assertions) over the logged step sequence — this is where your observability traces ([Pillar 5](#pillar-5--observability)) and eval harness meet.
 - **Golden trajectories.** For agent flagships, your golden set includes expected tool sequences, not just Q/A pairs.
-- **This maps to reliability.** Trajectory eval is how you catch the loop/idempotency/recovery failures listed under agent reliability engineering (Pillar 2) *before* they reach production.
+- **This maps to reliability.** Trajectory eval is how you catch the loop/idempotency/recovery failures listed under [agent reliability engineering](#agent-reliability-engineering) *before* they reach production.
 
 ### What you must build
 
@@ -781,7 +780,7 @@ In 2026 the CFO question is no longer *"does it work?"* — it's *"what does it 
 6. **Context-window economics** — long contexts cost quadratically in some setups; chunk aggressively, retrieve precisely.
 7. **Quantization** — GGUF / AWQ / GPTQ for self-hosted models cuts VRAM 2–4× with minimal quality loss.
 8. **Smaller model + better retrieval** — SLM + great RAG often beats Frontier + mediocre RAG, at 1/20th the cost.
-9. **Agent loop economics** — for agentic features, cost is `iterations × growing-context tokens × tool round-trips`, multiplied again in multi-agent setups by the number of agents and their messages. Cap iterations, prefer the cheapest topology that passes eval (see Pillar 2), and route easy traffic past the LLM entirely.
+9. **Agent loop economics** — for agentic features, cost is `iterations × growing-context tokens × tool round-trips`, multiplied again in multi-agent setups by the number of agents and their messages. Cap iterations, prefer the cheapest [topology](#single-agent-vs-multi-agent--topologies-and-trade-offs) that passes eval, and route easy traffic past the LLM entirely.
 
 **Disciplines to build:**
 - Per-feature unit economics dashboard (€ per query, by feature).

@@ -4,7 +4,6 @@ title: "Kubernetes & GitOps"
 sidebar_position: 8
 ---
 
-
 ## GitOps Principles
 
 GitOps is an operating model where the **desired state of all infrastructure and applications is declared in Git** and an automated agent continuously reconciles the actual state to match.

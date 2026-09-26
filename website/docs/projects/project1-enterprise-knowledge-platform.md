@@ -4,7 +4,6 @@ title: "P1 — Enterprise Knowledge Platform"
 sidebar_position: 2
 ---
 
-
 ## Goal
 
 Build a production RAG system that ingests, indexes, evaluates, and serves 10,000+ real documents across a real domain — not a single-PDF demo.

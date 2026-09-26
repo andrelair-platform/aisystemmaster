@@ -4,7 +4,6 @@ title: "Reliability Engineering"
 sidebar_position: 10
 ---
 
-
 ## Scope
 
 This covers the operational concerns that determine whether a system stays up, recovers when it fails, and meets its contractual commitments: high availability, disaster recovery, backup, SLO/SLA management, and incident response at the enterprise level.

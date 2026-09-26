@@ -13,10 +13,15 @@ Personal roadmap and reference library for becoming an **AI Systems Engineer for
 
 ---
 
+## New here? Start with the Learning Path
+
+👉 **[Learning Path](/learning-path)** — a staged, ordered route through everything below (Orientation → AI Core Foundations → Platform & Delivery → Security & Governance → Projects → Mastery). Follow it top-to-bottom; each stage builds on the last and ends with something you can *do*. The sections below are the reference material that path walks you through.
+
 ## What's here
 
 | Section | Content |
 |---|---|
+| [Learning Path](/learning-path) | **Start here** — the recommended learning order across all disciplines + projects, in 6 stages |
 | [Playbook](/playbook) | Master career roadmap — 10 pillars, market demand, monetization path, interview readiness |
 | [Disciplines](/disciplines) | 10 deep-reference files, one per skill domain |
 | [Projects](/projects) | 3 flagship project specs — implementation blueprints, corpus targets, eval methodology, six benchmark numbers |

@@ -4,7 +4,6 @@ title: "Corpus Engineering"
 sidebar_position: 2
 ---
 
-
 ## Why This Is a Discipline, Not a Step
 
 Most RAG tutorials skip from "download a PDF" to "embed it." Production corpus engineering is the unglamorous work that determines whether your retrieval actually works at scale. A bad corpus pipeline produces:

@@ -4,7 +4,6 @@ title: "P3 — Insurance Compliance Copilot"
 sidebar_position: 4
 ---
 
-
 ## Goal
 
 Build a production AI system for regulated-industry document analysis — AI-Act-grade audit lineage, self-hosted open models on sovereign infrastructure, full PII pipeline, and citation-backed decision support.

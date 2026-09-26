@@ -4,7 +4,6 @@ title: "P2 — Workflow Automation Platform"
 sidebar_position: 3
 ---
 
-
 ## Goal
 
 Build a production agentic system with human-in-the-loop approval, MCP tool access, and audit logs — turning a business workflow into a reliable, controllable AI-driven process.

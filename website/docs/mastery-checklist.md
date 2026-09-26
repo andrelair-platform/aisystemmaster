@@ -4,8 +4,6 @@ title: "Mastery Checklist"
 sidebar_position: 4
 ---
 
-# Mastery Checklist
-
 **Reading a pillar ≠ mastering it.** You have *mastered* a pillar when you can point to a **shippable artifact** that you built and can defend under questioning — not when you can recite the table.
 
 Each row below gives two things:

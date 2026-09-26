@@ -4,7 +4,6 @@ title: "CI/CD for AI Systems"
 sidebar_position: 7
 ---
 
-
 ## Why CI/CD for AI Systems Is Different
 
 Standard CI/CD validates code. AI system CI/CD must also validate **behavior** — the model's outputs, the retrieval quality, the agent's decisions. Code can be correct and the system can still regress (a prompt change breaks faithfulness, a new model version drifts on domain vocabulary).

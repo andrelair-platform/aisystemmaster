@@ -4,7 +4,6 @@ title: "Compliance & Governance"
 sidebar_position: 11
 ---
 
-
 ## Scope
 
 This covers the organizational and legal layer of production AI in regulated industries: DPIA, data retention, legal review, model governance, audit log architecture, change management, and cost controls. These are the concerns that determine whether a regulated buyer signs the contract — and whether they renew it.
